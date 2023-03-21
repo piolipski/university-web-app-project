@@ -1,3 +1,5 @@
+This application is a straightforward exam scheduling tool, built using ReactJS, Chakra-UI, and Supabase. Its purpose is to enable users to create a list of exams, including their dates, names, difficulty levels, and completion status. The application provides features to edit, overwrite, or delete the exam data as necessary. Additionally, users can filter exams based on their difficulty level or completion status.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
