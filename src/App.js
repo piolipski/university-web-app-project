@@ -1,42 +1,31 @@
-import React from 'react';
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+import { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
+import Todo from './pages/Todo';
+import supabase from './supabase';
 
 function App() {
-  return (
-    <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
-      </Box>
-    </ChakraProvider>
-  );
+	const [session, setSession] = useState(null);
+
+	useEffect(() => {
+		supabase.auth.getSession().then(({ data: { session } }) => {
+			setSession(session)
+		})
+
+		supabase.auth.onAuthStateChange((_event, session) => {
+			setSession(session)
+		})
+	}, [])
+	//console.log(session);
+
+	return (
+		<Routes>
+			<Route path={'/'} element={<Login />} />
+			<Route path={'/signup'} element={<SignUp />} />
+			{session && <Route path={'/todo'} element={<Todo session={session} />} />}
+		</Routes>
+	)
 }
 
 export default App;
